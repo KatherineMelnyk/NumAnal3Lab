@@ -5,47 +5,73 @@ import "math"
 var iter int
 
 func JacobiEigenvalue(A [][]float64) []float64 {
-	var d, s, s1, s1t, temp [][]float64
+	var d [][]float64 //s, s1, s1t, temp
 	var theta float64
-	flag := true
 	n := len(A)
-	s = EMatrix(n)
+	//s = EMatrix(n)
 
 	for i := 0; i < len(A); i++ {
 		d = append(d, []float64{})
-		temp = append(temp, []float64{})
+		//	temp = append(temp, []float64{})
 		for j := 0; j < n; j++ {
 			d[i] = append(d[i], A[i][j])
-			temp[i] = append(temp[i], 0.)
+			//		temp[i] = append(temp[i], 0.)
 		}
 	}
-	for flag == true {
-		flag = false
+global:
+	for {
+		iter++
 		i, j := maxOffDiagonal(d)
 
 		theta = 0.5 * math.Atan2(2*d[i][j], d[i][i]-d[j][j])
 
-		s1 = givensRotation(theta, n, i, j)
-		s1t = T(s1)
+		d[i][i] = math.Pow(math.Cos(theta), 2)*A[i][i] - 2*math.Sin(theta)*math.Cos(theta)*A[i][j] + math.Pow(math.Sin(theta), 2)*A[j][j]
+		d[j][j] = math.Pow(math.Sin(theta), 2)*A[i][i] + 2*math.Sin(theta)*math.Cos(theta)*A[i][j] + math.Pow(math.Cos(theta), 2)*A[j][j]
+		d[i][j] = (math.Pow(math.Cos(theta), 2)-math.Pow(math.Sin(theta), 2))*A[i][j] + math.Cos(theta)*math.Sin(theta)*(A[i][i]-A[j][j])
+		d[j][i] = d[i][j]
 
-		temp = mul(s1t, d)
+		for k := 0; k < n; k++ {
+			if k != i && k != j {
+				d[i][k] = math.Cos(theta)*A[i][k] + math.Sin(theta)*A[j][k]
+				d[k][i] = d[i][k]
+			}
+		}
 
-		d = mul(temp, s1)
+		for k := 0; k < n; k++ {
+			if k != i && k != j {
+				d[j][k] = math.Sin(theta)*A[i][k] - math.Cos(theta)*A[j][k]
+				d[k][j] = d[j][k]
+			}
+		}
 
-		temp = mul(s, s1)
+		for k := 0; k < n; k++ {
+			for l := 0; l < n; l++ {
+				if k != i && l != i && k != j && l != j {
+					d[k][l] = A[k][l]
+				}
+			}
+		}
+		//s1 = givensRotation(theta, n, i, j)
+		//s1t = T(s1)
 
-		s = mul(s, s1)
+		//temp = mul(s1t, d)
+
+		//d = mul(temp, s1)
+
+		//temp = mul(s, s1)
+
+		//s = mul(s, s1)
 
 		for i := 0; i < n; i++ {
 			for j := 0; j < n; j++ {
 				if i != j {
 					if math.Abs(d[i][j]) > EPS {
-						flag = true
+						continue global
 					}
 				}
 			}
 		}
-		iter++
+		break
 	}
 	answer := eig(d)
 	printVector(answer)
