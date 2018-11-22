@@ -22,15 +22,8 @@ func JacobiEigenvalue(A [][]float64) []float64 {
 	for flag == 1 {
 		flag = 0
 		max, i, j := maxOffDiagonal(d)
-		if d[i][i] == d[j][j] {
-			if d[i][j] > 0 {
-				theta = math.Pi / 4
-			} else {
-				theta = -math.Pi / 4
-			}
-		} else {
-			theta = 0.5 * math.Atan(2*d[i][j]/(d[i][i]-d[j][j]))
-		}
+
+		theta = 0.5 * math.Atan2(2*d[i][j], d[i][i]-d[j][j])
 
 		s1 = givensRotation(theta, n, i, j)
 		s1t = T(s1)
