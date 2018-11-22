@@ -55,6 +55,6 @@ func main() {
 	fmt.Printf("%v\n", lMax(C))
 	fmt.Printf("%v\n", lMin(C))
 	fmt.Printf("%v\n", lminmod(C))
-	//JacobiEigenvalue(C)
+	JacobiEigenvalue(C)
 	//fmt.Print("\n", iter)
 }

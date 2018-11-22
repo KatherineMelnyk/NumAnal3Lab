@@ -27,10 +27,11 @@ global:
 
 		theta = 0.5 * math.Atan2(2*d[i][j], d[i][i]-d[j][j])
 
-		quadSin := math.Pow(math.Sin(theta), 2)
-		quadCos := math.Pow(math.Cos(theta), 2)
 		sin := math.Sin(theta)
 		cos := math.Cos(theta)
+		quadSin := math.Pow(sin, 2)
+		quadCos := math.Pow(cos, 2)
+
 		d[i][i] = quadCos*A[i][i] - 2*sin*cos*A[i][j] + quadSin*A[j][j]
 		d[j][j] = quadSin*A[i][i] + 2*sin*cos*A[i][j] + quadCos*A[j][j]
 		d[i][j] = (quadCos-quadSin)*A[i][j] + cos*sin*(A[i][i]-A[j][j])
@@ -57,6 +58,13 @@ global:
 				}
 			}
 		}
+
+		for i := 0; i < n; i++ {
+			for j := 0; j < n; j++ {
+				A[i][j] = d[i][j]
+			}
+		}
+
 		//s1 = givensRotation(theta, n, i, j)
 		//s1t = T(s1)
 
