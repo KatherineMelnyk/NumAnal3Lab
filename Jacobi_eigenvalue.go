@@ -1,6 +1,8 @@
 package main
 
-import "math"
+import (
+	"math"
+)
 
 var iter int
 
@@ -25,21 +27,25 @@ global:
 
 		theta = 0.5 * math.Atan2(2*d[i][j], d[i][i]-d[j][j])
 
-		d[i][i] = math.Pow(math.Cos(theta), 2)*A[i][i] - 2*math.Sin(theta)*math.Cos(theta)*A[i][j] + math.Pow(math.Sin(theta), 2)*A[j][j]
-		d[j][j] = math.Pow(math.Sin(theta), 2)*A[i][i] + 2*math.Sin(theta)*math.Cos(theta)*A[i][j] + math.Pow(math.Cos(theta), 2)*A[j][j]
-		d[i][j] = (math.Pow(math.Cos(theta), 2)-math.Pow(math.Sin(theta), 2))*A[i][j] + math.Cos(theta)*math.Sin(theta)*(A[i][i]-A[j][j])
+		quadSin := math.Pow(math.Sin(theta), 2)
+		quadCos := math.Pow(math.Cos(theta), 2)
+		sin := math.Sin(theta)
+		cos := math.Cos(theta)
+		d[i][i] = quadCos*A[i][i] - 2*sin*cos*A[i][j] + quadSin*A[j][j]
+		d[j][j] = quadSin*A[i][i] + 2*sin*cos*A[i][j] + quadCos*A[j][j]
+		d[i][j] = (quadCos-quadSin)*A[i][j] + cos*sin*(A[i][i]-A[j][j])
 		d[j][i] = d[i][j]
 
 		for k := 0; k < n; k++ {
 			if k != i && k != j {
-				d[i][k] = math.Cos(theta)*A[i][k] + math.Sin(theta)*A[j][k]
+				d[i][k] = cos*A[i][k] + sin*A[j][k]
 				d[k][i] = d[i][k]
 			}
 		}
 
 		for k := 0; k < n; k++ {
 			if k != i && k != j {
-				d[j][k] = math.Sin(theta)*A[i][k] - math.Cos(theta)*A[j][k]
+				d[j][k] = sin*A[i][k] - cos*A[j][k]
 				d[k][j] = d[j][k]
 			}
 		}
