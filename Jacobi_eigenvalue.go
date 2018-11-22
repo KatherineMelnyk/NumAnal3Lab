@@ -28,32 +28,11 @@ func JacobiEigenvalue(A [][]float64) []float64 {
 		s1 = givensRotation(theta, n, i, j)
 		s1t = T(s1)
 
-		for i := 0; i < n; i++ {
-			for j := 0; j < n; j++ {
-				temp[i][j] = 0
-				for p := 0; p < n; p++ {
-					temp[i][j] += s1t[i][p] * d[p][j]
-				}
-			}
-		}
+		temp = mul(s1t, d)
 
-		for i := 0; i < n; i++ {
-			for j := 0; j < n; j++ {
-				d[i][j] = 0
-				for p := 0; p < n; p++ {
-					d[i][j] += temp[i][p] * s1[p][j]
-				}
-			}
-		}
+		d = mul(temp, s1)
 
-		for i := 0; i < n; i++ {
-			for j := 0; j < n; j++ {
-				temp[i][j] = 0
-				for p := 0; p < n; p++ {
-					temp[i][j] += s[i][p] * s1[p][j]
-				}
-			}
-		}
+		temp = mul(s, s1)
 
 		for i := 0; i < n; i++ {
 			for j := 0; j < n; j++ {
@@ -113,6 +92,6 @@ func givensRotation(theta float64, n, i, j int) [][]float64 {
 	res[i][i] = math.Cos(theta)
 	res[j][j] = res[i][i]
 	res[j][i] = math.Sin(theta)
-	res[i][j] = (-1) * res[j][i]
+	res[i][j] = -res[j][i]
 	return res
 }

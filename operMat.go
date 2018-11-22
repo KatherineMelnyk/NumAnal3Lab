@@ -112,3 +112,24 @@ func T(A [][]float64) [][]float64 {
 	}
 	return B
 }
+
+func mul(A, B [][]float64) [][]float64 {
+	var tmp, k [][]float64
+	n := len(A)
+	for i := 0; i < n; i++ {
+		tmp = append(tmp, []float64{})
+		k = append(k, []float64{})
+		for j := 0; j < n; j++ {
+			tmp[i] = append(tmp[i], 0)
+			k[i] = append(k[i], 0)
+		}
+	}
+	for i := 0; i < n; i++ {
+		for j := 0; j < n; j++ {
+			for k := 0; k < n; k++ {
+				tmp[i][j] += A[i][k] * B[k][j]
+			}
+		}
+	}
+	return tmp
+}
