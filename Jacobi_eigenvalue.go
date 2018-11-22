@@ -7,7 +7,7 @@ var iter int
 func JacobiEigenvalue(A [][]float64) []float64 {
 	var d, s, s1, s1t, temp [][]float64
 	var theta float64
-	flag := 1.
+	flag := true
 	n := len(A)
 	s = EMatrix(n)
 
@@ -19,8 +19,8 @@ func JacobiEigenvalue(A [][]float64) []float64 {
 			temp[i] = append(temp[i], 0.)
 		}
 	}
-	for flag == 1 {
-		flag = 0
+	for flag == true {
+		flag = false
 		i, j := maxOffDiagonal(d)
 
 		theta = 0.5 * math.Atan2(2*d[i][j], d[i][i]-d[j][j])
@@ -40,7 +40,7 @@ func JacobiEigenvalue(A [][]float64) []float64 {
 			for j := 0; j < n; j++ {
 				if i != j {
 					if math.Abs(d[i][j]) > EPS {
-						flag = 1
+						flag = true
 					}
 				}
 			}
