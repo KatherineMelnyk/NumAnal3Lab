@@ -25,15 +25,15 @@ global:
 		iter++
 		i, j := maxOffDiagonal(d)
 
-		theta = 0.5 * math.Atan2(2*d[i][j], d[i][i]-d[j][j])
+		theta = 0.5 * math.Atan2(2*d[i][j], d[j][j]-d[i][i])
 
 		sin := math.Sin(theta)
 		cos := math.Cos(theta)
 		quadSin := math.Pow(sin, 2)
 		quadCos := math.Pow(cos, 2)
 
-		d[i][i] = quadCos*A[i][i] - 2*sin*cos*A[i][j] + quadSin*A[j][j]
-		d[j][j] = quadSin*A[i][i] + 2*sin*cos*A[i][j] + quadCos*A[j][j]
+		d[j][j] = quadCos*A[i][i] - 2*sin*cos*A[i][j] + quadSin*A[j][j]
+		d[i][i] = quadSin*A[i][i] + 2*sin*cos*A[i][j] + quadCos*A[j][j]
 		d[i][j] = (quadCos-quadSin)*A[i][j] + cos*sin*(A[i][i]-A[j][j])
 		d[j][i] = d[i][j]
 
@@ -46,7 +46,7 @@ global:
 
 		for k := 0; k < n; k++ {
 			if k != i && k != j {
-				d[j][k] = sin*A[i][k] - cos*A[j][k]
+				d[j][k] = -sin*A[i][k] + cos*A[j][k]
 				d[k][j] = d[j][k]
 			}
 		}
@@ -64,6 +64,8 @@ global:
 				A[i][j] = d[i][j]
 			}
 		}
+
+		printMatrix(A)
 
 		//s1 = givensRotation(theta, n, i, j)
 		//s1t = T(s1)
