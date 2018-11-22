@@ -18,8 +18,7 @@ func lMax(A [][]float64) float64 {
 	for math.Abs(m[0]-tempM) >= EPS {
 		tempM = m[0]
 		nt = mulMatVec(A, pr)
-		//e = eIt(pr)
-		m[0] = nt[0] / pr[0] //scalar(nt, e) //
+		m[0] = nt[0] / pr[0]
 		pr = nt
 	}
 	return m[0]
@@ -34,6 +33,15 @@ func lMin(A [][]float64) float64 {
 	return l
 }
 
+func lminmod(A [][]float64) float64 {
+	var lminmod float64
+	n := len(A)
+	max := lMax(A)
+	C := minusMat(EMatrix(n), MatDivSc(mul(A, A), math.Pow(max, 2)))
+	lminmod = math.Sqrt(math.Pow(max, 2) * (1 - lMax(C)))
+	return math.Sqrt(lminmod)
+}
+
 func main() {
 	//A := MyMatrix(3)
 	C := symmetricM(5)
@@ -46,6 +54,7 @@ func main() {
 	//T(B)
 	fmt.Printf("%v\n", lMax(C))
 	fmt.Printf("%v\n", lMin(C))
-	JacobiEigenvalue(C)
-	fmt.Print("\n", iter)
+	fmt.Printf("%v\n", lminmod(C))
+	//JacobiEigenvalue(C)
+	//fmt.Print("\n", iter)
 }

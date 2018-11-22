@@ -2,6 +2,15 @@ package main
 
 import "math"
 
+func MatDivSc(A [][]float64, s float64) [][]float64 {
+	for i := 0; i < len(A); i++ {
+		for j := 0; j < len(A); j++ {
+			A[i][j] /= s
+		}
+	}
+	return A
+}
+
 func mulMatVec(A [][]float64, b []float64) []float64 {
 	var tmp, k []float64
 	n := len(A)
