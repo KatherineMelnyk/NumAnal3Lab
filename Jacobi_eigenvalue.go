@@ -21,7 +21,7 @@ func JacobiEigenvalue(A [][]float64) []float64 {
 	}
 	for flag == 1 {
 		flag = 0
-		max, i, j := maxOffDiagonal(d)
+		i, j := maxOffDiagonal(d)
 
 		theta = 0.5 * math.Atan2(2*d[i][j], d[i][i]-d[j][j])
 
@@ -34,17 +34,13 @@ func JacobiEigenvalue(A [][]float64) []float64 {
 
 		temp = mul(s, s1)
 
-		for i := 0; i < n; i++ {
-			for j := 0; j < n; j++ {
-				s[i][j] = temp[i][j]
-			}
-		}
+		s = mul(s, s1)
 
 		for i := 0; i < n; i++ {
 			for j := 0; j < n; j++ {
 				if i != j {
 					if math.Abs(d[i][j]) > EPS {
-						flag = 1 * (max / max)
+						flag = 1
 					}
 				}
 			}
@@ -56,7 +52,8 @@ func JacobiEigenvalue(A [][]float64) []float64 {
 	return answer
 }
 
-func maxOffDiagonal(A [][]float64) (max float64, i, j int) {
+func maxOffDiagonal(A [][]float64) (i, j int) {
+	var max float64
 	n := len(A)
 	max = math.Abs(A[0][1])
 	i = 0
@@ -72,7 +69,7 @@ func maxOffDiagonal(A [][]float64) (max float64, i, j int) {
 			}
 		}
 	}
-	return max, i, j
+	return i, j
 }
 
 func eig(A [][]float64) []float64 {
