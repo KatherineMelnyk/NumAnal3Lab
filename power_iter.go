@@ -43,18 +43,13 @@ func lminmod(A [][]float64) float64 {
 }
 
 func main() {
-	//A := MyMatrix(3)
 	C := symmetricM(5)
 	printMatrix(C)
-	//A := [][]float64{{1, 2}, {2, 1}}
-	//fmt.Printf("%v\n", lMax(A))
-	//fmt.Printf("%v\n", lMin(A))
-	//JacobiEigenvalue(A)
-	//B := [][]float64{{1, 2, 3}, {4, 6, 7}, {5, 8, 9}}
-	//T(B)
+
 	fmt.Printf("%v\n", lMax(C))
 	fmt.Printf("%v\n", lMin(C))
 	fmt.Printf("%v\n", lminmod(C))
 	JacobiEigenvalue(C)
-	//fmt.Print("\n", iter)
+
+	fmt.Print("\n", iter)
 }

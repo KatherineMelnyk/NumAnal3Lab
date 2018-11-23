@@ -1,33 +1,29 @@
 package main
 
 import (
-	"fmt"
 	"math"
 )
 
 var iter int
 
 func JacobiEigenvalue(A [][]float64) []float64 {
-	var d [][]float64 //s, s1, s1t, temp
+	var d [][]float64
 	var theta float64
 	n := len(A)
-	//s = EMatrix(n)
 
 	for i := 0; i < len(A); i++ {
 		d = append(d, []float64{})
-		//	temp = append(temp, []float64{})
 		for j := 0; j < n; j++ {
 			d[i] = append(d[i], A[i][j])
-			//		temp[i] = append(temp[i], 0.)
 		}
 	}
 global:
 	for {
 		iter++
-		i, j := maxOffDiagonal(d)
+		i, j := maxOffDiagonal(A)
 
-		theta = 0.5 * math.Atan2(2*d[j][i], d[i][i]-d[j][j])
-		fmt.Printf("%v\n", theta)
+		theta = 0.5 * math.Atan2(2*A[j][i], A[i][i]-A[j][j])
+
 		sin := math.Sin(theta)
 		cos := math.Cos(theta)
 		quadSin := math.Pow(sin, 2)
@@ -41,7 +37,6 @@ global:
 		for k := 0; k < n; k++ {
 			if k != i && k != j {
 				d[i][k] = cos*A[i][k] + sin*A[j][k]
-				//d[i][k] = -sin*A[j][k] + cos*A[i][k]
 				d[k][i] = d[i][k]
 			}
 		}
@@ -49,37 +44,16 @@ global:
 		for k := 0; k < n; k++ {
 			if k != i && k != j {
 				d[j][k] = -sin*A[i][k] + cos*A[j][k]
-				//d[j][k] = cos*A[j][k] + sin*A[i][k]
 				d[k][j] = d[j][k]
 			}
 		}
 
 		for k := 0; k < n; k++ {
-			for l := 0; l < n; l++ {
-				if k != i && l != i && k != j && l != j {
-					d[k][l] = A[k][l]
-				}
-			}
+			A[i][k] = d[i][k]
+			A[j][k] = d[j][k]
+			A[k][i] = d[k][i]
+			A[k][j] = d[k][j]
 		}
-
-		for i := 0; i < n; i++ {
-			for j := 0; j < n; j++ {
-				A[i][j] = d[i][j]
-			}
-		}
-
-		printMatrix(A)
-
-		//s1 = givensRotation(theta, n, i, j)
-		//s1t = T(s1)
-
-		//temp = mul(s1t, d)
-
-		//d = mul(temp, s1)
-
-		//temp = mul(s, s1)
-
-		//s = mul(s, s1)
 
 		for i := 0; i < n; i++ {
 			for j := 0; j < n; j++ {
