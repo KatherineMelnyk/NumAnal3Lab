@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"math"
 )
 
@@ -25,28 +26,30 @@ global:
 		iter++
 		i, j := maxOffDiagonal(d)
 
-		theta = 0.5 * math.Atan2(2*d[i][j], d[j][j]-d[i][i])
-
+		theta = 0.5 * math.Atan2(2*d[j][i], d[i][i]-d[j][j])
+		fmt.Printf("%v\n", theta)
 		sin := math.Sin(theta)
 		cos := math.Cos(theta)
 		quadSin := math.Pow(sin, 2)
 		quadCos := math.Pow(cos, 2)
 
-		d[j][j] = quadCos*A[i][i] - 2*sin*cos*A[i][j] + quadSin*A[j][j]
-		d[i][i] = quadSin*A[i][i] + 2*sin*cos*A[i][j] + quadCos*A[j][j]
+		d[i][i] = quadCos*A[i][i] + 2*sin*cos*A[i][j] + quadSin*A[j][j]
+		d[j][j] = -quadSin*A[i][i] - 2*sin*cos*A[i][j] + quadCos*A[j][j]
 		d[i][j] = (quadCos-quadSin)*A[i][j] + cos*sin*(A[i][i]-A[j][j])
 		d[j][i] = d[i][j]
 
 		for k := 0; k < n; k++ {
 			if k != i && k != j {
 				d[i][k] = cos*A[i][k] + sin*A[j][k]
+				//d[i][k] = -sin*A[j][k] + cos*A[i][k]
 				d[k][i] = d[i][k]
 			}
 		}
 
 		for k := 0; k < n; k++ {
 			if k != i && k != j {
-				d[j][k] = -sin*A[i][k] + cos*A[j][k]
+				d[j][k] = sin*A[i][k] - cos*A[j][k]
+				//d[j][k] = cos*A[j][k] + sin*A[i][k]
 				d[k][j] = d[j][k]
 			}
 		}
@@ -77,6 +80,9 @@ global:
 		//temp = mul(s, s1)
 
 		//s = mul(s, s1)
+		if iter == 3 {
+			break
+		}
 
 		for i := 0; i < n; i++ {
 			for j := 0; j < n; j++ {
